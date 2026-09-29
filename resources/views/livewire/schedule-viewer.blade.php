@@ -1,43 +1,52 @@
 <div>
-    <h1 class="mb-4">Jadwal Mata Pelajaran</h1>
+    <div class="card schedule-card">
+        <div class="card-header">
+            <h5>Jadwal Mata Pelajaran</h5>
+            <p class="text-muted mb-0 mt-1">Pilih hari untuk melihat jadwal pelajaran</p>
+        </div>
+        <div class="card-body">
+            @if ($errorMessage)
+                <div class="alert alert-danger">{{ $errorMessage }}</div>
+            @endif
 
-    @if ($errorMessage)
-        <div class="alert alert-danger">{{ $errorMessage }}</div>
-    @endif
-
-    <ul class="nav nav-tabs mb-3">
-        @foreach ($validDays as $day)
-            <li class="nav-item">
-                <button
-                    class="nav-link @if($selectedDay === $day) active @endif"
-                    wire:click="selectDay('{{ $day }}')"
-                >
-                    {{ ucfirst($day) }}
-                </button>
-            </li>
-        @endforeach
-    </ul>
-
-    @if ($this->schedules->isEmpty())
-        <div class="alert alert-info">Tidak ada jadwal untuk hari {{ ucfirst($selectedDay) }}.</div>
-    @else
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Jam</th>
-                    <th>Mata Pelajaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($this->schedules as $index => $schedule)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</td>
-                        <td>{{ $schedule->subject->name }}</td>
-                    </tr>
+            <div class="day-tabs">
+                @foreach ($validDays as $day)
+                    <button
+                        class="day-tab @if($selectedDay === $day) active @endif"
+                        wire:click="selectDay('{{ $day }}')"
+                    >
+                        {{ ucfirst($day) }}
+                    </button>
                 @endforeach
-            </tbody>
-        </table>
-    @endif
+            </div>
+
+            @if ($this->schedules->isEmpty())
+                <div class="empty-state">
+                    <div class="empty-icon">&#128197;</div>
+                    <p class="mb-0">Tidak ada jadwal untuk hari {{ ucfirst($selectedDay) }}.</p>
+                </div>
+            @else
+                <div class="table-responsive">
+                    <table class="table table-striped schedule-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">No</th>
+                                <th>Jam</th>
+                                <th>Mata Pelajaran</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($this->schedules as $index => $schedule)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</td>
+                                    <td>{{ $schedule->subject->name }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+    </div>
 </div>
