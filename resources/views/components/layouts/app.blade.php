@@ -10,9 +10,11 @@
     <header class="app-header">
         <div class="container">
             <div class="d-flex align-items-center gap-3">
-                <div class="logo-placeholder">
-                    Logo
-                </div>
+               <img
+                    src="{{ asset('images/logo-man11.png') }}"
+                     alt="Logo MAN 11 Jakarta Selatan"
+                      class="logo-img"
+>
                 <div>
                     <p class="school-name">Madrasah Aliyah Negeri 11 Jakarta Selatan</p>
                     <p class="school-subtitle">Sistem Jadwal Mata Pelajaran</p>
